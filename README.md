@@ -6,8 +6,8 @@ It is used side by side withe ARP Spoof program to create the Man In The Middle 
 # Installation
 You must make sure first you have scapy installed and scapy_http installed
 if not:
-sudo pip install scapy
-sudo pip install scapy_http
+`sudo pip install scapy`
+`sudo pip install scapy_http`
 
 
 # Usage
